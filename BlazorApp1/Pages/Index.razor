@@ -1,0 +1,90 @@
+﻿@page "/"
+@using BlazorApp1.Data;
+
+<PageTitle>Index</PageTitle>
+
+<div class="row">
+  @foreach(var p in pizzas)
+  {
+      <div class="col-sm-6">
+        <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="@p.ImageUrl" width="150" height="150" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">@p.Naming</h5>
+                <p class="card-text">@p.Compound</p>
+                <h4>Цена: @p.Cost</h4>
+                <a class="btn btn-primary" @onclick="() => Buy(p)">Добавить в корзину</a>
+              </div>
+        </div>
+    </div>
+  }
+  <div class="card" style="width: 18rem;">
+      <h5>Название новой пиццы</h5>
+      <input @bind-value="new_name"/>
+      <h5>Состав новой пиццы</h5>
+      <input @bind-value="new_compound"/>
+      <h5>Цена новой пиццы</h5>
+      <input @bind-value="new_cost" />
+      <h5>Ссылка на картинку для новой пиццы</h5>
+      <input @bind-value="new_imageUrl" />
+      <button class="btn btn-primary" @onclick="CreatePizza">Создать</button>
+  </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название</th>
+            <th scope="col">Цена</th>
+        </tr>
+    </thead>
+    <h1>Общая сумма: @sum</h1>
+    <tbody>
+        @for(int i = 0; i <= Cart.Count-1; i++)
+        {
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td>@Cart[i].Naming</td>
+                <td>@Cart[i].Cost</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code{
+    private string new_name;
+    private string new_compound;
+    private int new_cost;
+    private string new_imageUrl;
+    List<Pizza> pizzas = new List<Pizza>()
+    {
+        new Pizza("Пеперони","Пикантная пепперони,  моцарелла, томаты, фирменный томатный соус", 700,"/css/images/Peperoni.jpg"),
+        new Pizza("Гавайская","Цыпленок, ананасы, моцарелла, фирменный соус альфредо", 600,"/css/images/Gavaiskaia.jpg"),
+        new Pizza("Ассорти","Бекон, цыпленок, ветчина, сыры чеддер и пармезан, соус песто, кубики брынзы, томаты, красный лук, моцарелла, фирменный соус альфредо, чеснок, итальянские травы",500,"/css/images/Assorti.jpg"),
+        new Pizza("Маргарита","Увеличенная порция моцареллы, томаты, итальянские травы, фирменный томатный соус", 400,"/css/images/Margarita.jpg"),
+        new Pizza("Песто","Цыпленок, соус песто, кубики брынзы, томаты, моцарелла, фирменный соус альфредо", 300,"/css/images/Pesto.jpg"),
+        new Pizza("Вегетарианская","Шампиньоны, томаты, сладкий перец, красный лук, кубики брынзы, моцарелла, фирменный томатный соус, итальянские травы", 200,"/css/images/Vegetarianskaia.jpg")
+    };
+    List<Pizza> Cart = new List<Pizza>();
+    private int sum = 0;
+
+    private void Calculate()
+    {
+        sum = 0;
+        foreach(var p in Cart)
+        {
+            sum += p.Cost;
+        }
+    }
+
+    private void Buy(Pizza p)
+    {
+        Cart.Add(p);
+        Calculate();
+
+    }
+    private void CreatePizza()
+    {
+        pizzas.Add(new Pizza(new_name, new_compound, new_cost, new_imageUrl));
+    }
+}

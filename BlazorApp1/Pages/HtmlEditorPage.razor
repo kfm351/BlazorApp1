@@ -1,0 +1,25 @@
+﻿@page "/html-editor"
+
+<div class="d-flex flex-row gap-2 w-100">
+    <div class="editor-block">
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">HTML</label>
+          <textarea @bind="@_htmlcode" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">CSS</label>
+          <textarea @bind="@_htmlcode" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="d-flex gap-1 justify-content-between">
+            <button type="button" class="btn btn-primary">Ok</button>
+            <button type="button" class="btn btn-outline-primary">Clear</button>
+        </div>
+    </div>
+    <div class="html-block">
+        @_htmlcode
+    </div>
+</div>
+
+@code {
+    private string _htmlcode = "";
+}
